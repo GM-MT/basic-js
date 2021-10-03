@@ -20,12 +20,43 @@ import { NotImplementedError } from '../extensions/index.js';
  * 
  */
 export default class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  
+  constructor(flag = true) {
+    this.flag = flag;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  encrypt(text, key) {
+    // throw new NotImplementedError('Not implemented');
+      if (text == undefined || key == undefined) throw new Error('Incorrect arguments!');
+      let alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let pos = 0;
+      let result = '';
+      for (let i = 0; i < text.length; i++) {
+          if (alf.includes(text.toUpperCase()[i])) {
+              result += alf[((alf.indexOf(text.toUpperCase()[i]) + alf.indexOf(key.toUpperCase()[pos % key.length]) + 26) % 26)];
+              console.log(pos,  result)
+              pos++;
+          } else {
+              result += text[i];
+          }
+      }
+      return this.flag ? result : result.split('').reverse().join('');
+
   }
+  decrypt(text, key) {
+    // throw new NotImplementedError('Not implemented');
+      if (text == undefined || key == undefined) throw new Error('Incorrect arguments!');
+      let alf = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let pos = 0;
+      let result = '';
+      for (let i = 0; i < text.length; i++) {
+          if (alf.includes(text.toUpperCase()[i])) {
+              result += alf[((alf.indexOf(text.toUpperCase()[i]) - alf.indexOf(key.toUpperCase()[pos % key.length]) + 26) % 26)];
+              pos++;
+          } else {
+              result += text[i];
+          }
+      }
+      return this.flag ? result : result.split('').reverse().join('');
+  }
+
 }
